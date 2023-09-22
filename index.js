@@ -1,22 +1,17 @@
 const sumItems = function(array) {
-  // Sum all the numbers in the array.
+  if (!Array.isArray(array)) throw new Error('Input must be an array.');
 
-  // Base case.
-  if (array.length === 0) {
-    return 0;
-  }
-
-  // Recursive case
-  let sum = 0;
-  array.forEach(item => {
+  return array.reduce((sum, item) => {
+    // Check if item is array, if so we should call sumItems on that first.
     if (Array.isArray(item)) {
-      sum += sumItems(item);
+      return sum + sumItems(item);
+    } else if (isNaN(item)) {
+      throw new Error('All elements in the array must be numbers or arrays of numbers.');
     } else {
-      sum += item;
+      // Add item to the sum.
+      return sum + item;
     }
-  });
-
-  return sum;
+  }, 0);
 };
 
 console.log(sumItems([[1, 2, [[3], 4]], 5, []]));
